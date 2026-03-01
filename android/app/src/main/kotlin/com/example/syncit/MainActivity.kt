@@ -1,4 +1,4 @@
-package com.example.reminde_me
+package com.example.syncit
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,6 +1,6 @@
 {
-    "name": "reminde_me",
-    "short_name": "reminde_me",
+    "name": "syncit",
+    "short_name": "syncit",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -13,7 +13,7 @@ class BackupService {
 
   BackupService(this._authService, this._storageService);
 
-  static const String _backupFileName = 'reminde_me_backup.json';
+  static const String _backupFileName = 'syncit_backup.json';
 
   // --- Local Backup ---
 

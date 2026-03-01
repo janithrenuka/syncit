@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.reminde_me"
+    namespace = "com.example.syncit"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

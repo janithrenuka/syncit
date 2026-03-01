@@ -1,4 +1,4 @@
-# reminde_me
+# syncit
 
 A new Flutter project.
 
