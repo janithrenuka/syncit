@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncIt - Your Ultimate companion for productivity</title>
+    <meta name="description"
+        content="SyncIt helps you stay organized with Reminders, Todos, Checklists, and Notes. Simple, elegant, and effective.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/app_icon.png">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --bg: #030712;
+            --card-bg: rgba(31, 41, 55, 0.5);
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background Shadows */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .ambient-bg::before,
+        .ambient-bg::after {
+            content: '';
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+        }
+
+        .ambient-bg::before {
+            top: -10vw;
+            left: -10vw;
+            background: var(--primary);
+        }
+
+        .ambient-bg::after {
+            bottom: -10vw;
+            right: -10vw;
+            background: #a855f7;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        header {
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            background: linear-gradient(to bottom right, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            background: var(--glass);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Showcase Section */
+        .showcase {
+            padding: 6rem 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .phone-mockups {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 4rem;
+        }
+
+        .phone-mockup {
+            width: 280px;
+            border-radius: 40px;
+            border: 12px solid #111827;
+            overflow: hidden;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #000;
+        }
+
+        .phone-mockup:hover {
+            transform: translateY(-20px) rotate(2deg);
+        }
+
+        .phone-mockup img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 24px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-logo {
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ambient-bg"></div>
+
+    <nav>
+        <div class="logo">
+            <img src="assets/app_icon.png" alt="SyncIt Logo" class="logo-icon">
+            SyncIt
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#showcase">Showcase</a>
+            <a href="#">Support</a>
+        </div>
+        <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.5rem;">Download</a>
+    </nav>
+
+    <header>
+        <h1>Organize your life,<br>synchronize your mind.</h1>
+        <p class="hero-desc">SyncIt is the ultimate productivity suite for modern humans. Manage your reminders,
+            checklists, and notes in one elegant interface.</p>
+        <div class="cta-group">
+            <a href="#" class="btn btn-primary">Get App Now</a>
+            <a href="#features" class="btn btn-outline">Explore Features</a>
+        </div>
+    </header>
+
+    <section id="showcase" class="showcase">
+        <div class="phone-mockups">
+            <div class="phone-mockup">
+                <img src="assets/mocks/Screenshot_20260305_151137.jpeg" alt="SyncIt App Dashboard">
+            </div>
+            <div class="phone-mockup">
+                <img src="assets/mocks/Screenshot_20260305_151146.jpeg" alt="SyncIt App Notes">
+            </div>
+            <div class="phone-mockup">
+                <img src="assets/mocks/Screenshot_20260305_151155.jpeg" alt="SyncIt App Notes">
+            </div>
+            <div class="phone-mockup">
+                <img src="assets/mocks/Screenshot_20260305_151208.jpeg" alt="SyncIt App Notes">
+            </div>
+            <div class="phone-mockup">
+                <img src="assets/mocks/Screenshot_20260305_151216.jpeg" alt="SyncIt App Reminder">
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                    <path d="M12 6v6l4 2" />
+                </svg>
+            </div>
+            <h3>Smart Reminders</h3>
+            <p>Set one-time or recurring reminders that automatically reschedule when finished or dismissed.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11l3 3L22 4" />
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                </svg>
+            </div>
+            <h3>Agile Checklists</h3>
+            <p>Create grocery lists, packing lists, or project milestones with our lightning-fast checklist system.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+            </div>
+            <h3>Rich Notes</h3>
+            <p>Capture thoughts on the go. Organize with subtopics and keep your ideas synchronized and safe.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo footer-logo">
+            <img src="assets/app_icon.png" alt="SyncIt Logo" class="logo-icon">
+            SyncIt
+        </div>
+        <div style="margin-bottom: 2rem;">
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="janithrenuka" data-color="#FFDD00" data-emoji="☕" data-font="Cookie"
+                data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+        <p class="copyright">&copy; 2026 SyncIt. Built for productivity. <br> Developed with ❤️ by Janith
+            Karunathilaka</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
