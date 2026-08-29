@@ -26,18 +26,8 @@ class PermissionService {
         );
       }
 
-      // 3. Storage (Essential for Backup/Restore)
-      if (!await Permission.manageExternalStorage.isGranted) {
-        if (!context.mounted) return;
-        await _showExplanation(
-          context,
-          title: 'Storage Access',
-          message:
-              'To save and restore your data backups to your phone\'s storage, SyncIt needs permission to manage external storage.',
-          icon: Icons.storage,
-          onConfirm: () => Permission.manageExternalStorage.request(),
-        );
-      }
+      // Note: Storage permissions are handled contextually by FilePicker for backup/restore.
+      // No global storage permission needed.
 
       await prefs.setBool('permissions_onboarded', true);
     }

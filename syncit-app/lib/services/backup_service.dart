@@ -4,23 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class BackupService {
   Future<bool> _requestStoragePermission() async {
-    if (Platform.isAndroid) {
-      if (await Permission.manageExternalStorage.isGranted) return true;
-      if (await Permission.storage.isGranted) return true;
-
-      // Request permissions
-      if (await Permission.manageExternalStorage.request().isGranted) {
-        return true;
-      }
-      if (await Permission.storage.request().isGranted) {
-        return true;
-      }
-      return false;
-    }
+    // FilePicker handles contextual permissions on modern Android versions (11+).
+    // For legacy support, you could add standard storage permission checks here,
+    // but MANAGE_EXTERNAL_STORAGE is strictly avoided.
     return true;
   }
 

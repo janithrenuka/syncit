@@ -260,6 +260,79 @@
             color: var(--text-muted);
         }
 
+        /* Support Section */
+        .support {
+            padding: 2rem 5% 6rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .support-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            max-width: 900px;
+            width: 100%;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .support-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .support-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .support-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Policy Section */
+        .policy-section {
+            padding: 2rem 5% 6rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .policy-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            max-width: 980px;
+            width: 100%;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .policy-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, var(--primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .policy-card p,
+        .policy-card li {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+        }
+
+        .policy-card ul {
+            padding-left: 1.25rem;
+            margin: 1rem 0;
+        }
+
         /* Footer */
         footer {
             padding: 8rem 5% 4rem;
@@ -358,8 +431,8 @@
         <div class="nav-links">
             <a href="#features">Features</a>
             <a href="#showcase">Showcase</a>
-            <a href="#" id="policy-trigger">Policy</a>
-            <a href="#">Support</a>
+            <a href="#policy">Policy</a>
+            <a href="#support">Support</a>
         </div>
         <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.5rem;">Download</a>
     </nav>
@@ -430,6 +503,36 @@
         </div>
     </section>
 
+    <section id="support" class="support">
+        <div class="support-card">
+            <h2>Need help or have a question?</h2>
+            <p>Whether you want support, feedback, or a quick product question, the SyncIt team is here to help.</p>
+            <div class="support-actions">
+                <a href="mailto:janithrenuka@gmail.com?subject=SyncIt%20Support" class="btn btn-primary">Email Support</a>
+                <a href="https://buymeacoffee.com/janithrenuka" target="_blank" rel="noreferrer" class="btn btn-outline">Support the Project</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="policy" class="policy-section">
+        <div class="policy-card">
+            <h2>SyncIt Privacy Policy</h2>
+            <p><strong>Last updated: 2026</strong></p>
+            <p>SyncIt does not collect, store, or share any personal information from users.</p>
+            <p>All data created within the app, including reminders, todo lists, notes, and checklists, is stored locally on the user's device.</p>
+            <p>The app does not use internet connectivity, analytics services, or third-party tracking tools.</p>
+            <p>Users may choose to back up their data locally on their device storage. This data is not transmitted to any external servers.</p>
+            <ul>
+                <li>Names or contact details</li>
+                <li>Location data</li>
+                <li>Usage analytics or browsing behavior</li>
+                <li>Third-party account information</li>
+            </ul>
+            <p>If you have any questions about this Privacy Policy, you may contact:</p>
+            <p><strong>Janith Renuka</strong></p>
+        </div>
+    </section>
+
     <footer>
         <div class="logo footer-logo">
             <img src="assets/app_icon.png" alt="SyncIt Logo" class="logo-icon">
@@ -445,55 +548,24 @@
             Karunathilaka</p>
     </footer>
 
-    <div id="policy-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>SyncIt Privacy Policy</h2>
-            <p><strong>Last updated: 2026</strong></p>
-            <p>SyncIt does not collect, store, or share any personal information from users.</p>
-            <p>All data created within the app, including reminders, todo lists, notes, and checklists, is stored
-                locally
-                on the user's device.</p>
-            <p>The app does not use internet connectivity, analytics services, or third-party tracking tools.</p>
-            <p>Users may choose to back up their data locally on their device storage. This data is not transmitted to
-                any external servers.</p>
-            <p>If you have any questions about this Privacy Policy, you may contact:</p>
-            <p><strong>Janith Renuka</strong></p>
-        </div>
-    </div>
-
     <script>
-        // Modal Logic
-        const modal = document.getElementById('policy-modal');
-        const trigger = document.getElementById('policy-trigger');
-        const closeBtn = document.querySelector('.close-modal');
-
-        trigger.onclick = (e) => {
-            e.preventDefault();
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        closeBtn.onclick = () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        window.onclick = (event) => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // Smooth scroll for anchors
+        // Smooth scroll for section anchors while keeping the URL hash updated
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                const target = document.querySelector(this.getAttribute('href'));
+                const href = this.getAttribute('href');
+
+                if (!href || href === '#') {
+                    e.preventDefault();
+                    return;
+                }
+
+                const target = document.querySelector(href);
                 if (target) {
                     e.preventDefault();
+                    history.pushState(null, '', href);
                     target.scrollIntoView({
-                        behavior: 'smooth'
+                        behavior: 'smooth',
+                        block: 'start'
                     });
                 }
             });
